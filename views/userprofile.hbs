@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3 mx-auto">
+      <div class="card z-depth-0 border mb-5">
+        <!--Card image-->
+        <div class="view overlay hm-white-slight">
+          <img class="mx-auto rounded-circle image-search mb-2 mt-4" style="background-image: url(/{{userprofile.profileImage}})" class="img-fluid" alt="">
+          <a>
+            <div class="mask"></div>
+          </a>
+        </div>
+        <!--/.Card image-->
+        <!--Card content-->
+        <div class="card-body">
+          <!--Social shares button-->
+          <!--Title-->
+          <h4 class="card-title text-center"><i class="ion-record status-indicaor {{userprofile.status}}"> &nbsp; </i><span class="userinfo">{{#if userprofile.firstName}}{{userprofile.firstName}} {{userprofile.lastName}}</span>{{else}}
+            {{userprofile.email}}{{/if}}</h4>
+          <hr>
+          <!--Text-->
+          <div class="row">
+            <div class="col">
+              <ul class="user-stats">
+                <li class="id mb-3"><i class="ion-ios-paw"></i>&nbsp; ID<strong class="desc">{{userprofile._id}}</strong></li>
+                <li class="location mb-3"><i class="ion-ios-location"></i>&nbsp; From<strong class="desc">Israel</strong></li>
+                <li class="member-since mb-3"><i class="ion-person"></i>&nbsp; Member Since<strong class="desc">{{dateFormat userprofile.createdAt "DD MMM YYYY"}}</strong></li>
+                <li class="member-since"><i class="ion-ios-email"></i>&nbsp; Email<strong class="desc email">{{userprofile.email}}</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col text-center">
+                <a href="/conversations/{{userprofile._id}}" class="btn btn-unique waves-effect waves-light"><i class="ion-paper-airplane"></i>&nbsp; Send Message</a>
+            </div>
+          </div>
+
+        </div>
+        <!--/.Card content-->
+      </div>
+    </div>
+
+    <div class="col-lg-9 mx-auto">
+
+    </div>
+  </div>
+</div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="card z-depth-0 border mb-5 profile-card">
+        <!--Card image-->
+        <!--/.Card image-->
+        <!--Card content-->
+        <div class="card-body">
+          <!--Social shares button-->
+          <!--Title-->
+          <h5 class="card-title">Description</h5>
+          <!--Text-->
+          <div class="card-info">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          </div>
+          <hr>
+          <h5 class="card-title">Skills</h5>
+          <!--Text-->
+          <div class="card-info">
+            <span class="badge badge-pill primary-color">Alan</span>
+            <span class="badge badge-pill light-blue">Shalom</span>
+            <span class="badge badge-pill indigo">Lah</span>
+          </div>
+        </div>
+
+        <!--/.Card content-->
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    var socket = io('/home');
+    socket.on('connect', function(data) {
+      socket.emit('userConnect', {
+        nickname: '{{{user.firstName}}}',
+        userID: '{{{user._id}}}'
+      });
+    });
+
+  });
+</script>

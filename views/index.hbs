@@ -1,0 +1,186 @@
+
+<header class="masthead text-white text-center">
+  <div class="overlay"></div>
+  <div class="container d-flex h-100">
+    <div class="row justify-content-center align-self-center">
+      <div class="col-xl-9 mx-auto" >
+        <p class="">
+          <h1 class="" data-wow-delay="">PROGO</h1></p>
+        <h2 class="mb-5" data-wow-delay="">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Donec et volutpat nisi. Vivamus non felis augue. Pellentesque consequat eleifend risus id pretium!</h2>
+      </div>
+      <div class="col-xl-9 mx-auto">
+        <div class="row">
+          <div class="col-8 col-md-3 mx-auto">
+            <button type="submit" class="btn btn-block btn-lg btn-primary text-white animated fadeInUp" data-toggle="modal" data-target="#modal-log">GET STARTED</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="modal fade" id="modal-log" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header mx-auto">
+        <p class="h3 text-center mt-4 font-weight-light text-uppercase">Login</p>
+      </div>
+      <div class="modal-body">
+        <form id="login" class="col-10 mx-auto">
+          <div class="md-form">
+              <input autocomplete="off" type="text" id="email" class="form-control">
+              <label for="email" class="">Email</label>
+          </div>
+          <div class="md-form">
+            <input autocomplete="current-password" type="password" id="password" class="form-control">
+            <label for="password">Password</label>
+          </div>
+          <div class="warn">
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary">Login &nbsp;<i class="ion-log-in"></i></button>
+            <div class="loading-spinner hide"></div>
+          </div>
+          <hr>
+          <div class="text-center">
+            <p class="font-small grey-text d-flex justify-content-center">Don't have an account? <a class="dark-grey-text font-bold ml-1" onclick="$('#modal-log').modal('hide'); setTimeout(function(){$('#modal-reg').modal('show')}, 400)"> Sign up</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modal-reg" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header mx-auto">
+        <p class="h3 text-center mt-4 font-weight-light text-uppercase">Sign Up</p>
+      </div>
+      <div class="modal-body">
+        <form id="register" class="col-10 mx-auto">
+          <div class="md-form">
+              <input class="form-control" name="email" autocomplete="off" type="text">
+              <label for="email" class="">Email</label>
+          </div>
+          <div class="md-form">
+            <input class="form-control" name="password" autocomplete="current-password" type="password" >
+            <label for="password">Password</label>
+          </div>
+          <div class="md-form">
+            <input class="form-control" name="passwordConf" autocomplete="current-password" type="password" disabled>
+            <label for="password">Reapet password</label>
+          </div>
+          <div class="warn">
+          </div>
+          <div id="buttonArea" class="text-center">
+            <button type="submit" class="btn btn-primary text-uppercase">Sign Up &nbsp;<i class="ion-log-in"></i></button>
+            <div class="loading-spinner hide"></div>
+          </div>
+          <hr>
+          <div class="text-center">
+            <p class="font-small grey-text d-flex justify-content-center">Already signup? <a class="dark-grey-text font-bold ml-1" onclick="$('#modal-reg').modal('hide'); setTimeout(function(){$('#modal-log').modal('show')}, 400)">Login</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function() {
+    $('#login').submit(function(event) {
+      var emailField = $(this).find('input[id=email]');
+      var passwordField = $(this).find('input[id=password]');
+      var submitButton = $(this).find('button[type=submit]');
+      var spinner = $('.loading-spinner');
+      var alert = $(this).find($('.warn'));
+      alert.empty(); // remove the error text
+      emailField.removeClass('invalid');
+      passwordField.removeClass('invalid');
+      spinner.removeClass('hide');
+      submitButton.addClass('hide');
+      var formData = {
+        'email': emailField.val(),
+        'password': passwordField.val()
+      }
+      $.ajax({
+        type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+        url: '/login', // the url where we want to POST
+        data: formData, // our data object
+        dataType: 'json', // what type of data do we expect back from the server
+        encode: true,
+        timeout: 3500
+      }).done(function(data) {
+        if (!data.user) {
+          emailField.addClass('invalid');
+          passwordField.addClass('invalid');
+          spinner.addClass('hide');
+          submitButton.removeClass('hide');
+          alert.append('<div class="alert alert-danger">' + data.info.message + '</div>'); // add the actual error message under our input
+        } else {
+          spinner.addClass('hide');
+          alert.append('<div class="text-center text-primary"><i class="success-text ion-checkmark animated fadeIn"></i></div>')
+          setTimeout('login_direction()',600);
+        }
+      }).fail(function(data) {
+        spinner.addClass('hide');
+        submitButton.removeClass('hide');
+        alert.append('<div class="alert alert-danger">Failed to connect to server</div>');
+      });
+      event.preventDefault();
+    });
+    // process the form
+    $('#register').submit(function(event) {
+      var emailField = $(this).find('input[name=email]');
+      var passwordField = $(this).find('input[name=password]');
+      var passwordConfField = $(this).find('input[name=passwordConff]');
+      var submitButton = $(this).find('button[type=submit]');
+      var spinner = $(this).find($('.loading-spinner'));
+      var alert = $(this).find($('.warn'));
+      alert.empty(); // remove the error text
+      emailField.removeClass('invalid');
+      passwordField.removeClass('invalid');
+      passwordConfField.removeClass('invalid');
+      submitButton.addClass('hide');
+      spinner.removeClass('hide');
+      var formData = {
+        'email': emailField.val(),
+        'password': passwordField.val()
+      }
+      console.log(formData);
+      $.ajax({
+          type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+          url: '/signup', // the url where we want to POST
+          data: formData, // our data object
+          dataType: 'json', // what type of data do we expect back from the server
+          encode: true,
+          timeout: 3500
+        }).done(function(data) {
+          if (!data.user) {
+            // handle errors for email ---------------
+            emailField.addClass('invalid');
+            passwordField.addClass('invalid');
+            passwordConfField.addClass('invalid');
+            submitButton.removeClass('hide');
+            spinner.addClass('hide');
+            alert.append('<div class="alert alert-danger">' + data.info.message + '</div>'); // add the actual error message under our input
+
+          } else {
+            spinner.addClass('hide');
+            alert.append('<div class="text-center text-primary"><i class="success-text ion-checkmark animated fadeIn"></i></div>')
+            setTimeout('login_direction()',600);
+          }
+        })
+        .fail(function(data) {
+          spinner.addClass('hide');
+          submitButton.removeClass('hide');
+          alert.append('<div class="alert alert-danger">Failed to connect to server</div>');
+        });
+      event.preventDefault();
+    });
+  });
+
+  function login_direction() {
+    window.location = '/'; // Members Area
+  }
+</script>

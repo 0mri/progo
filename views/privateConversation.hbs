@@ -1,0 +1,162 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12 col-md-8 mx-auto">
+      <div class="chat_window">
+        <div class="top_menu">
+          <div class="row heading">
+          <div class="col heading-avatar">
+            <div class="heading-avatar-icon">
+              <img class="profilepicture img-fluid rounded-circle" src="../{{recipient.profileImage}}">
+              <div class="chat-name ml-2">
+                <a class="heading-name-meta">{{#if recipient.firstName}}{{recipient.firstName}} {{recipient.lastName}} {{else}} {{recipient.email}} {{/if}}</a>
+                <span class="heading-online">{{#if recipient.lastseen}} {{#ifEquals recipient.status "offline"}}last seen {{dateFormat recipient.lastseen 'dddd HH:mm'}}{{else}} {{ recipient.status}}{{/ifEquals}} {{else}} {{recipient.status}} {{/if}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <ul id="messages" class="messages">
+          {{#each conversation.messages}}
+            {{#ifEquals this.author._id ../user._id}}
+              <li class="message right appeared"><div class="text_wrapper"><div class="text"><span>{{this.body}}</span></div><div class="time">{{dateFormat this.createdAt "HH:mm"}}</div></div></li>
+              {{else}}
+              <li class="message left appeared"><div class="text_wrapper"><div class="text">{{this.body}}</div><div class="time">{{dateFormat this.createdAt "HH:mm"}}</div></div></li>
+            {{/ifEquals}}
+          {{/each}}
+        </ul>
+        <form id="message">
+          <div class="bottom_wrapper clearfix">
+            <div class="message_input_wrapper"><input class="message_input"/></div>
+            <button type="submit "class="send_message">
+              <div class="icon"><i class="ion-android-send"></i></div>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function() {
+    $(".messages").animate({ scrollTop: document.getElementById("messages").scrollHeight }, "slow");
+    var socket = io();
+    console.log(socket);
+    socket.on('connect', function(data) {
+      socket.emit('userConnect', {
+        nickname: '{{{user.firstName}}}',
+        userID: '{{{user._id}}}'
+      });
+    });
+    socket.on('refresh messages', function(msg) {
+      $(".messages").animate({ scrollTop: document.getElementById("messages").scrollHeight }, "slow");
+      if ('{{user._id}}' == msg.author) {
+        $('.messages').append('<li id="'+msg._id+'" class="message right"><div class="text_wrapper"><div class="text">'+msg.body+'</div><div class="time">{{dateFormat msg.createdAt "HH:mm"}}</div></div></li>');
+        setTimeout(function () {
+          $('#'+msg._id).addClass('appeared')
+        }, 50);
+      }
+      if (msg.author == '{{recipient._id}}') {
+        $('.messages').append('<li id="'+msg._id+'" class="message left"><div class="text_wrapper"><div class="text">'+msg.body+'</div><div class="time">{{dateFormat msg.createdAt "HH:mm"}}</div></div></li>');
+        setTimeout(function () {
+          $('#'+msg._id).addClass('appeared')
+        }, 50);
+      } else if (msg.author != '{{recipient._id}}' && '{{user._id}}' != msg.author) {
+        console.log('New notifi');
+      }
+    });
+    $('#message').on('submit', function(e) {
+      $.get('/api/chat/{{recipient._id}}')
+        .done(function(data) {
+          var msgBody = $('.message_input').val();
+          $('.message_input').val('');
+          var emitMessage = {
+            conversationID: data,
+            to: '{{recipient._id}}',
+            from: '{{user._id}}',
+            message: msgBody,
+          }
+          socket.emit('new message', emitMessage);
+        })
+      e.preventDefault();
+    })
+
+
+    var timeout;
+
+function timeoutFunction() {
+    typing = false;
+    socket.emit('typing', {
+      typing: false,
+      to: '{{recipient._id}}',
+      from: '{{user._id}}'
+    });
+}
+    $('.message_input').on('input propertychange paste', function() {
+      //this will handle pasting text and clearing text with browser built in clear button
+      $(this).trigger('keyup');
+    }).on('keyup', function(){
+      if($(this).val().length > 0){
+         socket.emit('typing', {
+           typing: true,
+           to: '{{recipient._id}}',
+           from: '{{user._id}}'
+         });
+         clearTimeout(timeout);
+         timeout = setTimeout(timeoutFunction, 2000);
+      }
+    })
+
+
+    function emitTyping (){
+
+    }
+
+
+
+    /*
+        $.get("/chat/{{otherUser}}", function(data) {
+          if (data.conversationId.length) {
+            var conversID = data.conversationId[0]._id;
+            socket.emit('enter conversation', conversID);
+            socket.on('refresh messages', function(msg){
+              if ('{{user._id}}' == msg.author) {
+                $('.chat').append('<div class="message me"><img src="/{{user.profileImage}}" /><div><p>' + msg.body + '</p></div></div>');
+              } else
+                $('.chat').append('<div class="message"><img src="https://randomuser.me/api/portraits/women/49.jpg" /><div><p>' + msg.body + '</p></div></div>');
+            });
+            $.each(data.messages, function(index, msg) {
+              if ('{{user._id}}' == msg.author._id) {
+                $('.chat').append('<div class="message me"><img src="/{{user.profileImage}}" /><div><p>' + msg.body + '</p></div></div>');
+              } else
+                $('.chat').append('<div class="message"><img src="https://randomuser.me/api/portraits/women/49.jpg" /><div><p>' + msg.body + '</p></div></div>');
+            });
+          }
+          $('#message').on('submit', function(e) {
+            message = $('#messageInput').val();
+            $('#messageInput').val('');
+            var formData = {
+              composedMessage: message
+            }
+            $.ajax({
+              type: 'POST',
+              dataType: 'json',
+              url: '/chat/api/{{otherUser}}',
+              data: formData,
+              encode: true,
+            }).done(function(data, success) {
+              socket.emit('new message', {
+                room: conversID,
+                message: data
+              });
+            }).fail(function(data, success) {
+              console.log(data);
+            });
+            e.preventDefault();
+          });
+        });
+
+    */
+  });
+
+
+</script>

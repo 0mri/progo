@@ -1,0 +1,12 @@
+<div class="loaderbg grey lighten-2">
+  <div class="loader">
+  </div>
+</div>
+<script type="text/javascript">
+  $('#barba-wrapper').hide();
+  $(window).on('load', function() {
+    $('.loaderbg').fadeOut(function() {
+      $('#barba-wrapper').fadeIn();
+    })
+  })
+</script>

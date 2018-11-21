@@ -1,0 +1,196 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 mx-auto">
+      <ol class="breadcrumb">
+        <li>Enhance the security of your account by enabling two-factor authentication.</li>
+      </ol>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-lg-3 mx-auto">
+      <div class="card z-depth-0 border mb-5">
+        <!--Card image-->
+        <div class="view overlay hm-white-slight">
+          <img class="mx-auto rounded-circle image-search mb-2 mt-4" style="background-image: url(/{{user.profileImage}})" class="img-fluid" alt="">
+          <a>
+            <div class="mask"></div>
+          </a>
+        </div>
+        <!--/.Card image-->
+        <!--Card content-->
+        <div class="card-body">
+          <!--Social shares button-->
+          <!--Title-->
+          <h4 class="card-title text-center"><i class="ion-record status-indicaor {{user.status}}"> &nbsp; </i><span class="userinfo">{{#if user.firstName}}{{user.firstName}} {{user.lastName}}</span>{{/if}}</h4>
+          <hr>
+          <!--Text-->
+          <div class="row">
+            <div class="col">
+              <ul class="user-stats">
+                <li class="id mb-3"><i class="ion-ios-paw"></i>&nbsp; ID<strong class="desc">{{user._id}}</strong></li>
+                <li class="location mb-3"><i class="ion-ios-location"></i>&nbsp; From<strong class="desc">Israel</strong></li>
+                <li class="member-since mb-3"><i class="ion-person"></i>&nbsp; Member Since<strong class="desc">{{dateFormat user.createdAt "DD MMM YYYY"}}</strong></li>
+                <li class="member-since"><i class="ion-ios-email"></i>&nbsp; Email<strong class="desc email">{{user.email}}</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!--/.Card content-->
+      </div>
+    </div>
+
+    <div class="col-lg-9 mx-auto">
+      <form autocomplete="off" class="col-md-5 profile-form">
+        <fieldset>
+
+          <!-- Form Name -->
+          <legend>Account Details</legend>
+
+          <!-- Text input-->
+          <div class="form-group mt-2">
+            <label class="col-md-4 control-label" for="displayname">First Name</label>
+            <div class="col-md-12">
+              <input name="firstName" type="text" {{#if user.firstName}} value="{{user.firstName}}" {{else}} placeholder="Please enter your first name" {{/if}} class="border form-control input-md">
+            </div>
+          </div>
+          <div class="form-group mt-4">
+            <label class="col-md-4 control-label" for="displayname">Last Name</label>
+            <div class="col-md-12">
+              <input name="lastName" type="text" {{#if user.lastName}} value="{{user.lastName}}" {{else}} placeholder="Please enter your first name" {{/if}} class="border form-control input-md">
+            </div>
+          </div>
+          <div class="form-group mt-4">
+            <label class="col-md-4 control-label" for="displayname">Email</label>
+            <div class="col-md-12">
+              <input name="email" type="text" placeholder="{{user.email}}" class="border form-control input-md disabled" required="" disabled>
+              <a role="button" class="email edit-input-link text-primary">Edit email</a>
+            </div>
+          </div>
+          <div class="form-group mt-4 hide">
+            <div class="col-md-12">
+              <input name="confEmail" type="text" placeholder="Confirm your email" class="border form-control input-md" required="" disabled>
+            </div>
+          </div>
+          <div class="form-group mt-4">
+            <label class="col-md-4 control-label" for="displayname">Password</label>
+            <div class="col-md-12">
+              <input name="password" type="password" placeholder="******" class="border form-control input-md disabled" required="" disabled>
+              <a role="button" class="password edit-input-link text-primary">Edit password</a>
+            </div>
+          </div>
+          <div class="form-group mt-4 hide">
+            <div class="col-md-12">
+              <input name="confPassword" type="password" placeholder="Confirm your new password" class="border form-control input-md" required="" disabled>
+            </div>
+          </div>
+            <div class="form-group mt-4">
+              <div class="col-md-12">
+                <div id="warn">
+
+                </div>
+              </div>
+            </div>
+          <div class="form-group mt-4">
+            <div class="col-md-12">
+              <div class="output text-center">
+                <button style="width:100%" type="submit" class="btn btn-primary waves-effect waves-light">Update profile &nbsp;  <div class="loading-spinner hide"></div></button>
+              </div>
+            </div>
+        </fieldset>
+      </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var socket = io();
+      socket.on('connect', function (data) {
+        socket.emit('userConnect', {
+          nickname: '{{{user.firstName}}}',
+          userID: '{{{user._id}}}'
+        });
+    });
+    socket.on('refresh messages', function(msg) {
+      console.log(msg);
+      });
+      console.log(socket);
+      $('.email.edit-input-link').click(function(){
+        $(this).prev().removeAttr('disabled').removeClass('disabled').attr('placeholder', 'Edit your email').focus();
+        $('input[placeholder="Confirm your email"]').removeAttr('disabled').parents(2).removeClass('hide');
+        this.remove();
+      });
+      $('.password.edit-input-link').click(function(){
+        $(this).prev().removeAttr('disabled').removeClass('disabled').attr('placeholder', 'Type your new password').focus();
+        $('input[placeholder="Confirm your new password"]').removeAttr('disabled').parents(2).removeClass('hide');
+        this.remove();
+      });
+
+
+      var progress;
+				$('.profile-form').on('submit', function(event) {
+
+					if(!progress){
+					progress = true;
+					var submitButton = $(this).find('button[type=submit]'),
+						spinner = $(this).find($('.loading-spinner')),
+            email = $(this).find('input[name=email]').val(),
+            confEmail = $(this).find('input[name=confEmail]').val(),
+            password = $(this).find('input[name=password]').val(),
+            confPassword = $(this).find('input[name=confPassword]').val(),
+            alert = $(this).find($('#warn')),
+						formData = {
+							firstName: $(this).find('input[name=firstName]').val(),
+							lastName: $(this).find('input[name=lastName]').val()
+						};
+            alert.empty();
+            if ((email == confEmail) && email){
+              formData.email = email
+            }
+            else if(email != confEmail) {
+              alert.append('<div class="alert alert-danger">Email dont match</div>');
+              progress = false;
+              return false;
+            }
+            if ((password == confPassword) && password){
+              formData.password = password
+            }
+            else if(password!= confPassword){
+              progress = false;
+              alert.append('<div class="alert alert-danger">Password dont match</div>');
+              return false;
+            }
+            console.log(formData);
+					spinner.removeClass('hide');
+					$.ajax({
+						type: 'POST',
+						url: '/profile',
+						data: formData,
+						dataType: 'json',
+						encode: true
+					}).done(function(data) {
+            console.log(data);
+            if(data.code == 11000)  {
+              alert.append('<div class="alert alert-danger">Email already exists</div>');
+              spinner.addClass('hide');
+              progress = false;
+              return false;
+            }
+						spinner.addClass('hide');
+						submitButton.append('<i class="ion-checkmark animated fadeIn"></i>');
+						$('.userinfo').text(formData.firstName + ' ' + formData.lastName);
+            $('.desc.email').text(formData.email)
+						setTimeout(function() {
+							$('.ion-checkmark').remove();
+							progress = false;
+						}, 2000);
+					});
+
+
+
+					}
+					event.preventDefault();
+				});
+    });
+  </script>

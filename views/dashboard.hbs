@@ -1,0 +1,145 @@
+<header>
+  <div class="container">
+    {{#unless user.active}}
+
+      <div class="alert alert-warning alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button> Thanks so much for joining Progo! To finish signing up, you just need to confirm that we got your email right
+      </div>
+    {{/unless}}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="jumbotron text-center">
+          <h2 class="h2-responsive">Hi, {{#if user.firstName}}{{user.firstName}}{{else}} {{user.email}}{{/if}}</h2>
+          <a href="" class="btn btn-elegant">Learn more &nbsp;&nbsp;<i class="ion-ios-book-outline"></i></a>
+
+          <a href="" class="btn btn-primary">Go Pro &nbsp;&nbsp;<i class="ion-briefcase"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Begin page content -->
+<div class="container mb-5">
+  <div class="row">
+    <div class="container col-12">
+      <div class="row">
+
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <!-- First column -->
+        <div class="col-12 col-md-4 mb-3">
+
+          <!--Card-->
+          <div class="card">
+
+            <!--Card image-->
+            <div class="view overlay hm-white-slight">
+              <img src="https://mdbootstrap.com/images/regular/people/img%20(76).jpg" class="img-fluid" alt="">
+              <a href="#">
+                <div class="mask"></div>
+              </a>
+            </div>
+            <!--/.Card image-->
+
+            <!--Card content-->
+            <div class="card-body">
+              <!--Title-->
+              <h4 class="card-title">Dogs are the best friends</h4>
+              <!--Text-->
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="#" class="btn btn-primary waves-effect">Read More</a>
+            </div>
+            <!--/.Card content-->
+
+          </div>
+          <!--/.Card-->
+
+        </div>
+        <!--/ First column -->
+
+        <!-- Second column -->
+        <div class="col-12 col-md-4 mb-3">
+
+          <!--Card-->
+          <div class="card">
+
+            <!--Card image-->
+            <div class="view overlay hm-white-slight">
+              <img src="https://mdbootstrap.com/images/regular/people/img%20(78).jpg" class="img-fluid" alt="">
+              <a href="#">
+                <div class="mask"></div>
+              </a>
+            </div>
+            <!--/.Card image-->
+
+            <!--Card content-->
+            <div class="card-body">
+              <!--Title-->
+              <h4 class="card-title">The best coffee ever</h4>
+              <!--Text-->
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="#" class="btn btn-elegant waves-effect">Read More</a>
+            </div>
+            <!--/.Card content-->
+
+          </div>
+          <!--/.Card-->
+
+        </div>
+        <!--/ Second column -->
+
+        <!-- Third column -->
+        <div class="col-12 col-md-4 mb-3">
+
+          <!--Card-->
+          <div class="card">
+
+            <!--Card image-->
+            <div class="view overlay hm-white-slight">
+              <img src="https://mdbootstrap.com/images/regular/people/img%20(81).jpg" class="img-fluid" alt="">
+              <a href="#">
+                <div class="mask"></div>
+              </a>
+            </div>
+            <!--/.Card image-->
+
+            <!--Card content-->
+            <div class="card-body">
+              <!--Title-->
+              <h4 class="card-title">Beautiful blonde girl</h4>
+              <!--Text-->
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="#" class="btn btn-secondary waves-effect">Read More</a>
+            </div>
+            <!--/.Card content-->
+
+          </div>
+          <!--/.Card-->
+
+        </div>
+        <!--/ Third column -->
+      </div>
+    </div>
+  </div>
+  <!-- First row -->
+</div>
+<script type="text/javascript">
+  $(function(){
+    var socket = io();
+    socket.on('connect', function (data) {
+      socket.emit('userConnect', {
+        nickname: '{{{user.firstName}}}',
+        userID: '{{{user._id}}}'
+      });
+  });
+  socket.on('refresh messages', function(msg) {
+    if($('.btn__badge').hasClass('hide'))
+      $('.btn__badge').removeClass('hide');
+    });
+  })
+</script>

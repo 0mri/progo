@@ -1,0 +1,223 @@
+/* Custom Stylesheet */
+
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+
+.profile-form input {
+      padding-left: 10px;
+}
+
+.edit-input-link {
+  font-size: 0.9em;
+  position: absolute;
+  top: 17px;
+  right: 20px;
+}
+.output .loading-spinner {
+  height: 15px;
+  width: 15px;
+  vertical-align: middle;
+    border: 3px solid #e2e2e2;
+    border-right-color: transparent;
+}
+
+
+.barba-container
+{
+    min-height: calc(100vh - 448px);
+}
+.image-search
+{
+    width: 150px;  height: 150px;
+    background-size: cover;
+}
+header.masthead
+{
+    position: relative;
+
+    height: 100vh;  padding-top: 8rem;  padding-bottom: 8rem;     background: url('https://picsum.photos/1920/1080/?random') no-repeat center center;  background-color: #343a40;          -webkit-background-size: cover;             -moz-background-size: cover;               -o-background-size: cover;                  background-size: cover;
+}
+
+header.masthead .overlay
+{
+    position: absolute;  top: 0;  left: 0;  width: 100%;  height: 100%;  opacity: .55;     background-color: #212529;
+}
+
+header.masthead h2
+{
+    font-size: 1rem;
+}
+
+header.masthead h1
+{
+    letter-spacing: 5px;
+}
+
+header.masthead h1,
+header.masthead h2,
+header.masthead button
+{
+    font-weight: 300;  padding: 10px 0 10px 0;     border: 0;
+}
+
+header.masthead button:hover
+{
+    background: rgba(247, 178, 67, .5);
+}
+
+@media (min-width: 768px)
+{
+    header.masthead
+    {
+        padding-top: 12rem;  padding-bottom: 12rem;
+    }
+    header.masthead h1
+    {
+        font-size: 3rem;
+    }
+}
+
+/*Small-Screen View */
+
+@media (max-width: 767px)
+{
+    footer
+    {
+        min-height: 100vh;
+    }
+}
+
+.search-results
+{
+    margin: 0;  border-top: 1px solid #e9e9e9;  background-color: #fff;
+}
+
+.search-results a
+{
+    font-size: 12px;  display: block;  padding: 0 30px;     white-space: nowrap;  color: black;
+}
+
+.search-results a:hover
+{
+    cursor: pointer;  background-color: #eee;
+}
+
+@keyframes stretch
+{
+    0%,
+    100%
+    {
+        transform: translate(0, 0);
+    }
+    50%
+    {
+        transform: translate(150px, 0);
+    }
+    80%
+    {
+        transform: translate(-150px, 0);
+    }
+}
+
+@keyframes image_blur
+{
+    0%
+    {
+        filter: blur(0px);
+    }
+    50%
+    {
+        filter: blur(9px);
+    }
+    100%
+    {
+        filter: blur(0px);
+    }
+}
+
+@keyframes slideInRight
+{
+    0%
+    {
+        transform: translate3d(-5%, 0, 0);
+
+        opacity: 0;  filter: blur(0px);
+    }
+    50%
+    {
+        transform: translate3d(-5%, 0, 0);
+
+        opacity: 0;  filter: blur(2px);
+    }
+    100%
+    {
+        transform: none;         opacity: 1;
+
+        filter: blur(0px);
+    }
+}
+
+.nav-item
+{
+    line-height: 3;
+}
+
+.navbar
+{
+    padding: 0 1rem !important;  transition: all .5s;
+}
+.navbar.scrollUp
+{
+    transform: translateY(-64px);
+}
+
+.hide
+{
+    display: none;
+}
+
+
+.navbar-brand
+{
+    font-size: 1.7em;  font-weight: 100;
+}
+
+.special-img
+{
+    position: relative;  width: 30px;  height: 30px;
+}
+
+
+.card .user-stats {
+font-size: 14px;
+text-align: left;
+}
+ul.user-stats  {
+  list-style: none;
+   list-style-image: none;
+   display: inline;
+
+}
+.card .user-stats li {
+  position: relative;
+}
+
+.card .user-stats li .desc {
+  float: right;
+}
+
+.card-title .status-indicaor {
+  font-size: 0.3em;
+  vertical-align: middle;
+}
+.card-title .status-indicaor.online {
+  color: #00b22d;
+}
+.card-title .status-indicaor.offline {
+  color: #b00000;
+}

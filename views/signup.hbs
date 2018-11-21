@@ -1,0 +1,162 @@
+<style>
+  #register {
+    margin: 5em auto;
+    padding: 3em 2em 2em 2em;
+    background: #fafafa;
+    border: 1px solid #ebebeb;
+    box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 1px 0px, rgba(0, 0, 0, 0.09804) 0px 1px 2px 0px;
+  }
+</style>
+<div class="container">
+  <div class="section">
+    <form id=register action=/signup method=post class="col s12" autocomplete=off>
+      <h4 class=center>SIGN UP</h4>
+      <div class=row>
+        <div class="input-field col s12">
+          <input id=email name=email type=text required autocomplete=off>
+          <label for=email>Email</label>
+        </div>
+        <div class="input-field col s12">
+          <input id=password name=password type=password required autocomplete=off>
+          <label for=password>Password</label>
+        </div>
+      </div>
+      <div class=row>
+        <div id=regalert>
+        </div>
+      </div>
+      <div class="row center">
+        <button id=regsubmit type=submit name=submit class="btn-large waves-effect waves-light teal">SING UP</button>
+        <div id=regspinner class="preloader-wrapper small active hide">
+          <div class=spinner-layer>
+            <div class="circle-clipper left">
+              <div class=circle></div>
+            </div>
+            <div class=gap-patch>
+              <div class=circle></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class=circle></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+  // magic.js
+  function login_direction() {
+    window.location = '/'; // Members Area
+  }
+  $(document).ready(function() {
+    // process the form
+    $('#login').submit(function(event) {
+      $('.alert').remove(); // remove the error text
+      $('#email').removeClass('invalid');
+      $('#password').removeClass('invalid');
+      $('#spinner').removeClass('hide');
+      $('#submit').addClass('hide');
+      // get the form data
+      // there are many ways to get this data using jQuery (you can use the class or id also)
+      var formData = {
+        'password': $('input[name=password]').val(),
+        'email': $('input[name=email]').val(),
+      };
+      // process the form
+      $.ajax({
+          type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+          url: '/login', // the url where we want to POST
+          data: formData, // our data object
+          dataType: 'json', // what type of data do we expect back from the server
+          encode: true
+        })
+        // using the done promise callback
+        .done(function(data) {
+          // log data to the console so we can see
+          // here we will handle errors and validation messages
+          console.log(data);
+          if (!data.user) {
+            // handle errors for name ---------------
+
+            $('#email').addClass('invalid');
+            $('#password').addClass('invalid');
+            $('#spinner').addClass('hide');
+            $('#submit').removeClass('hide');
+            $('#alert').append('<div class="alert alert-danger">' + data.info.message + '</div>'); // add the actual error message under our input
+          } else {
+            console.log(data);
+            // ALL GOOD! just show the success message!
+            $('#email').addClass('valid');
+            $('#password').addClass('valid');
+            $('#spinner').removeClass('hide');
+            $('#submit').addClass('hide');
+            setTimeout('login_direction()', 1000);
+            // usually after form submission, you'll want to redirect
+            // window.location = '/thank-you'; // redirect a user to another page
+          }
+        })
+        // using the fail promise callback
+        .fail(function(data) {
+          // show any errors
+          // best to remove for production
+          console.log(data);
+        });
+      // stop the form from submitting the normal way and refreshing the page
+      event.preventDefault();
+    });
+    // process the form
+    $('#register').submit(function(event) {
+      $('.alert').remove(); // remove the error text
+      $('#email2').removeClass('invalid');
+      $('#password2').removeClass('invalid');
+      $('#password3').removeClass('invalid');
+      $('#regsubmit').addClass('hide');
+      $('#regspinner').removeClass('hide');
+      // get the form data
+      // there are many ways to get this data using jQuery (you can use the class or id also)
+      var formData = {
+        'email': $('input[name=email]').val(),
+        'password': $('input[name=password]').val()
+      };
+      // process the form
+      $.ajax({
+          type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+          url: '/signup', // the url where we want to POST
+          data: formData, // our data object
+          dataType: 'json', // what type of data do we expect back from the server
+          encode: true
+        })
+        // using the done promise callback
+        .done(function(data) {
+          // log data to the console so we can see
+          console.log(data);
+          // here we will handle errors and validation messages
+          if (!data.user) {
+            // handle errors for email ---------------
+            $('#email2').addClass('invalid');
+            $('#regsubmit').removeClass('hide');
+            $('#regspinner').addClass('hide');
+            $('#regalert').append('<div class="alert alert-danger">' + data.info.message + '</div>'); // add the actual error message under our input
+
+          } else {
+            // ALL GOOD! just show the success message!
+            $('#email2').addClass('valid');
+            $('#password2').addClass('valid');
+            $('#regsubmit').addClass('hide');
+            $('#regspinner').removeClass('hide');
+            setTimeout('login_direction()', 0);
+            // usually after form submission, you'll want to redirect
+            // window.location = '/thank-you'; // redirect a user to another page
+          }
+        })
+        // using the fail promise callback
+        .fail(function(data) {
+          // show any errors
+          // best to remove for production
+        });
+      // stop the form from submitting the normal way and refreshing the page
+      event.preventDefault();
+    });
+  });
+</script>
