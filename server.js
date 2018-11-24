@@ -11,7 +11,7 @@ var port = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash = require('connect-flash');
-var morgan = require('morgan');
+
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -24,9 +24,11 @@ mongoose.connect(configDB.url, {
 }, function (err, db) {}); // connect to our database
 require('./config/passport')(passport); // pass passport for configuration
 // set up our express application
-if(!process.env.NODE_ENV == 'DEVELOPMENT') {
+if(process.env.NODE_ENV == 'DEVELOPMENT'){
+  var morgan = require('morgan');
   app.use(morgan('dev'))
-} // log every request to the console
+ // log every request to the console
+}
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({

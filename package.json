@@ -1,20 +1,28 @@
 {
-  "name": "node-authentication",
+  "name": "progo",
+  "version": "0.2.0",
+  "description": "A sample Node.js app",
+  "engines": {
+    "node": "10.x"
+  },
   "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/omryko/progo"
+  },
   "dependencies": {
-    "Validator": "^1.0.5",
-    "barba-transitions": "^1.1.0",
+    "validator": "^1.0.5",
     "barba.js": "^1.0.0",
     "bcrypt-nodejs": "latest",
     "bluebird": "^3.5.2",
-    "body-parser": "~1.15.2",
+    "body-parser": "^1.18.3",
     "connect-flash": "~0.1.1",
     "cookie-parser": "~1.4.3",
     "dateformat": "^3.0.3",
     "dotenv": "^4.0.0",
-    "express": "~4.14.0",
+    "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
-    "express-session": "~1.14.1",
+    "express-session": "^1.15.6",
     "handlebars-dateformat": "^1.1.1",
     "mdbootstrap": "^4.5.12",
     "method-override": "~2.3.6",
@@ -32,9 +40,7 @@
     "unique-string": "^1.0.0"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-uglify": "^3.0.1",
-    "morgan": "~1.7.0",
+    "morgan": "^1.9.1",
     "pump": "^3.0.0",
     "webpack": "^3.12.0"
   }
