@@ -68,7 +68,7 @@
             <label for="password">Password</label>
           </div>
           <div class="md-form">
-            <input class="form-control" name="passwordConf" autocomplete="current-password" type="password" disabled>
+            <input class="form-control" name="passwordConf" autocomplete="current-password" type="password">
             <label for="password">Reapet password</label>
           </div>
           <div class="warn">
@@ -86,6 +86,7 @@
     </div>
   </div>
 </div>
+<script type="text/javascript" src="/js/dependencies/validator.min.js"></script>
 <script type="text/javascript">
   $(function() {
     $('#login').submit(function(event) {
@@ -99,6 +100,8 @@
       passwordField.removeClass('invalid');
       spinner.removeClass('hide');
       submitButton.addClass('hide');
+      /*if(!validator.isEmail(emailField))
+        console.log('aaa');*/
       var formData = {
         'email': emailField.val(),
         'password': passwordField.val()
@@ -133,7 +136,7 @@
     $('#register').submit(function(event) {
       var emailField = $(this).find('input[name=email]');
       var passwordField = $(this).find('input[name=password]');
-      var passwordConfField = $(this).find('input[name=passwordConff]');
+      var passwordConfField = $(this).find('input[name=passwordConf]');
       var submitButton = $(this).find('button[type=submit]');
       var spinner = $(this).find($('.loading-spinner'));
       var alert = $(this).find($('.warn'));
@@ -143,11 +146,35 @@
       passwordConfField.removeClass('invalid');
       submitButton.addClass('hide');
       spinner.removeClass('hide');
+
+
+      if(!validator.isEmail(emailField.val())){ //if not an email
+        setTimeout(function(){
+            emailField.addClass('invalid');
+            passwordField.addClass('invalid');
+            passwordConfField.addClass('invalid');
+            submitButton.removeClass('hide');
+            spinner.addClass('hide');
+            alert.append('<div class="alert alert-danger">Please enter a valid email</div>'); // add the actual error message under our input
+          }, 250);
+        return false;
+      }
+      if(passwordField.val() != passwordConfField.val()){ //if passwords dont match
+        setTimeout(function(){
+            emailField.addClass('invalid');
+            passwordField.addClass('invalid');
+            passwordConfField.addClass('invalid');
+            submitButton.removeClass('hide');
+            spinner.addClass('hide');
+            alert.append('<div class="alert alert-danger">Password dont match</div>'); // add the actual error message under our input
+          }, 250);
+        return false;
+      }
       var formData = {
-        'email': emailField.val(),
+        'email': emailField.val().toLowerCase(),
         'password': passwordField.val()
       }
-      console.log(formData);
+      //console.log(formData); //console user data
       $.ajax({
           type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
           url: '/signup', // the url where we want to POST

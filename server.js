@@ -16,7 +16,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongooseStore = require('mongoose-express-session')(session.Store);
-var configDB = require('./config/database.js');
 // configuration ===============================================================
 mongoose.Promise = require('bluebird');
 mongoose.connect(process.env.HOST, {
@@ -34,7 +33,7 @@ if(process.env.NODE_ENV == 'DEVELOPMENT'){
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({
-  extended: true 
+  extended: true
 }));
 //  handlebars configuration
 var hbs = exphbs.create({

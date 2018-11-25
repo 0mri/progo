@@ -42,7 +42,7 @@ module.exports = function(passport) {
     function(req, email, password, done) {
       if (email)
         email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
-        
+
       // asynchronous
       process.nextTick(function() {
         User.findOne({
@@ -83,8 +83,10 @@ module.exports = function(passport) {
       passReqToCallback: true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
     function(req, email, password, done) {
-      if (email)
-        email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
+      if (!validator.isEmail(email)) //check if email
+        return done(null, false, {message: 'Please enter a valid email'});
+
+      email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
 
       // asynchronous
       process.nextTick(function() {
@@ -98,10 +100,10 @@ module.exports = function(passport) {
               return done(err);
 
             // check to see if theres already a user with that email
-            if (user) {
+            if (user)
               return done(null, false, {message: 'That email is already taken.'});
-            } else {
 
+            else {
               // create the user
               var newUser = new User();
 
