@@ -34,7 +34,7 @@ if(process.env.NODE_ENV == 'DEVELOPMENT'){
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true //alan
 }));
 //  handlebars configuration
 var hbs = exphbs.create({
