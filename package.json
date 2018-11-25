@@ -11,7 +11,6 @@
     "url": "https://github.com/omryko/progo"
   },
   "dependencies": {
-    "validator": "^1.0.5",
     "barba.js": "^1.0.0",
     "bcrypt-nodejs": "latest",
     "bluebird": "^3.5.2",
@@ -37,7 +36,8 @@
     "popper.js": "^1.14.4",
     "socket.io": "^2.1.1",
     "toastr": "^2.1.4",
-    "unique-string": "^1.0.0"
+    "unique-string": "^1.0.0",
+    "validator": "^10.9.0"
   },
   "devDependencies": {
     "morgan": "^1.9.1",
