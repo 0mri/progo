@@ -19,8 +19,10 @@ var MongooseStore = require('mongoose-express-session')(session.Store);
 var configDB = require('./config/database.js');
 // configuration ===============================================================
 mongoose.Promise = require('bluebird');
-mongoose.connect(configDB.url, {
-  useMongoClient: true
+mongoose.connect(process.env.HOST, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false
 }, function (err, db) {}); // connect to our database
 require('./config/passport')(passport); // pass passport for configuration
 // set up our express application
