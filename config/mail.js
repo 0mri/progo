@@ -16,7 +16,7 @@ module.exports = function(to, subject, message) {
 
   // setup email data with unicode symbols
   let mailOptions = {
-    from: '"PROGO" <no-reply@efra.im>', // sender address
+    from: '"PROGO" <no-reply@progo.com>', // sender address
     to: to, // list of receivers
     subject: subject, // Subject line
     html: message, // plain text body

@@ -57,7 +57,7 @@ var userSchema = new mongoose.Schema({
 userSchema.methods.sendMail = function (user) {
   var to = user.email,
     subject = 'Welcome to PROGO',
-    message = 'To activate your email click <a href="https://efra.im/v/' + user._id + '/' + user.token + '">here</a>';
+    message = 'To activate your email click <a href="' + process.env.URL + '' + user._id + '/' + user.token + '">here</a>';
   mail(to, subject, message);
 }
 //get rendom image
