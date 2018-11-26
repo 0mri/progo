@@ -115,7 +115,8 @@ module.exports = function(passport) {
               newUser.save(function(err) {
                 if (err)
                   return done(err);
-                newUser.sendMail(newUser);
+                if(process.env.NODE_ENV != 'development')
+                  newUser.sendMail(newUser);
                 return done(null, newUser);
               });
             }

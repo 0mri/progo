@@ -1,6 +1,6 @@
 // load the things we need
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt');
 var uniqueString = require('unique-string');
 // load mail
 var mail = require('../../config/mail');
@@ -70,7 +70,8 @@ userSchema.methods.currentTime = function () {
 }
 // generating a hash
 userSchema.methods.generateHash = function (password) {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+return bcrypt.hashSync(password, 10);
+
 };
 // checking if password is valid
 userSchema.methods.validPassword = function (password) {

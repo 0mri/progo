@@ -25,7 +25,7 @@ mongoose.connect(process.env.HOST, {
 }, function (err, db) {}); // connect to our database
 require('./config/passport')(passport); // pass passport for configuration
 // set up our express application
-if(process.env.NODE_ENV == 'DEVELOPMENT'){
+if(process.env.NODE_ENV == 'development'){
   var morgan = require('morgan');
   app.use(morgan('dev'))
  // log every request to the console

@@ -11,7 +11,7 @@
     "url": "https://github.com/omryko/progo"
   },
   "dependencies": {
-    "bcrypt-nodejs": "latest",
+    "bcrypt": "latest",
     "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
     "connect-flash": "~0.1.1",
@@ -22,7 +22,7 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
     "handlebars-dateformat": "^1.1.1",
-    "mdbootstrap": "^4.5.14",
+    "mdbootstrap": "^4.5.15",
     "method-override": "~3.0.0",
     "mongoose": "^5.3.13",
     "mongoose-express-session": "0.0.5",
