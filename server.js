@@ -68,6 +68,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET, // session secret
   resave: true,
   cookie: {
+    httpOnly: false,
     secure: false
   },
   unset: 'destroy',
