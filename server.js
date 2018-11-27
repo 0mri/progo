@@ -67,6 +67,9 @@ const hour = 3.6e+6;
 app.use(session({
   secret: process.env.SESSION_SECRET, // session secret
   resave: true,
+  cookie: {
+    secure: false
+  },
   unset: 'destroy',
   saveUninitialized: false,
   store: new MongoStore({mongooseConnection: mongoose.connection})
