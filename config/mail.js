@@ -1,8 +1,7 @@
 var nodemailer = require('nodemailer');
-module.exports = function(to, subject, message) {
+module.exports = function (to, subject, message) {
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
-
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -13,7 +12,6 @@ module.exports = function(to, subject, message) {
       pass: process.env.EMAIL_PASSWORD // generated ethereal password
     }
   });
-
   // setup email data with unicode symbols
   let mailOptions = {
     from: '"PROGO" <no-reply@progo.com>', // sender address
@@ -21,10 +19,9 @@ module.exports = function(to, subject, message) {
     subject: subject, // Subject line
     html: message, // plain text body
   };
-
   // send mail with defined transport object
   transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
+    if(error) {
       return console.log(error);
     }
     console.log('Message sent: %s', info.messageId);

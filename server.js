@@ -11,11 +11,10 @@ var port = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash = require('connect-flash');
-
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var MongooseStore = require('mongoose-express-session')(session.Store);
+const MongoStore = require('connect-mongo')(session);
 // configuration ===============================================================
 mongoose.Promise = require('bluebird');
 mongoose.connect(process.env.HOST, {
@@ -25,10 +24,10 @@ mongoose.connect(process.env.HOST, {
 }, function (err, db) {}); // connect to our database
 require('./config/passport')(passport); // pass passport for configuration
 // set up our express application
-if(process.env.NODE_ENV == 'development'){
+if(process.env.NODE_ENV == 'development') {
   var morgan = require('morgan');
   app.use(morgan('dev'))
- // log every request to the console
+  // log every request to the console
 }
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // get information from html forms
@@ -40,22 +39,22 @@ var hbs = exphbs.create({
   helpers: {
     dateFormat: require('handlebars-dateformat'),
     ifEquals: function (arg1, arg2, options) {
-      var a =  new String(arg1).localeCompare(new String(arg2));
-      return(!a) ? options.fn(this) : options.inverse(this)
+      var a = new String(arg1).localeCompare(new String(arg2));
+      return (!a) ? options.fn(this) : options.inverse(this)
     },
-    trimString: function(text, length) {
-        words = text.split(" ");
-        new_text = text;
-        if (words.length > length){
-            new_text = "";
-            for (var i = 0; i <= length; i++) {
-               new_text += words[i] + " ";
-            }
-            new_text = new_text.trim() + "..."
+    trimString: function (text, length) {
+      words = text.split(" ");
+      new_text = text;
+      if(words.length > length) {
+        new_text = "";
+        for(var i = 0; i <= length; i++) {
+          new_text += words[i] + " ";
         }
-        return new_text;
+        new_text = new_text.trim() + "..."
+      }
+      return new_text;
     }
-},
+  },
   defaultLayout: 'main',
   extname: 'hbs'
 });
@@ -63,17 +62,23 @@ app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs'); // set up hbs for templating
 app.use(express.static(__dirname + '/public'));
 // required for passport
+const day = 86400000;
 app.use(session({
   secret: process.env.SESSION_SECRET, // session secret
   resave: true,
+  cookie: {
+    secure: false,
+    maxAge: day * 14
+  },
+  unset: 'destroy',
   saveUninitialized: true,
-  store: new MongooseStore({
-    connection: mongoose
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection
   })
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
+//app.use(flash()); // use connect-flash for flash messages stored in session
 // SOCKET.IO ===================================================================
 require('./socketEvents')(io);
 // routes ======================================================================

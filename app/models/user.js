@@ -40,7 +40,7 @@ var userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  socketID:{
+  socketID: {
     type: String,
   },
   status: {
@@ -49,6 +49,10 @@ var userSchema = new mongoose.Schema({
   },
   lastseen: {
     type: Date,
+  },
+  stayLogedIn: {
+    type: Boolean,
+    default: false
   }
 }, {
   versionKey: false
@@ -70,8 +74,7 @@ userSchema.methods.currentTime = function () {
 }
 // generating a hash
 userSchema.methods.generateHash = function (password) {
-return bcrypt.hashSync(password, 10);
-
+  return bcrypt.hashSync(password, 10);
 };
 // checking if password is valid
 userSchema.methods.validPassword = function (password) {

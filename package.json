@@ -11,10 +11,11 @@
     "url": "https://github.com/omryko/progo"
   },
   "dependencies": {
-    "bcrypt": "latest",
+    "bcrypt": "^3.0.2",
     "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
     "connect-flash": "~0.1.1",
+    "connect-mongo": "^2.0.2",
     "cookie-parser": "~1.4.3",
     "dateformat": "^3.0.3",
     "dotenv": "^6.1.0",
@@ -25,7 +26,6 @@
     "mdbootstrap": "^4.5.15",
     "method-override": "~3.0.0",
     "mongoose": "^5.3.13",
-    "mongoose-express-session": "0.0.5",
     "nodemailer": "^4.7.0",
     "passport": "~0.4.0",
     "passport-facebook": "~2.1.1",

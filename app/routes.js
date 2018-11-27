@@ -78,17 +78,15 @@ module.exports = function (app, passport) {
       });
     })(req, res, next);
   });
-
   app.get('/user/:userid', UserController.isLoggedIn, function (req, res, next) {
     if(req.params.userid == req.user._id) return res.redirect('/profile')
-    UserController.getUser(req, res, function(err, user){
+    UserController.getUser(req, res, function (err, user) {
       if(err) return res.redirect('/')
       res.render('userprofile', {
         user: req.user,
         userprofile: user
       })
     })
-
   });
   app.get('/profile', UserController.isLoggedIn, function (req, res, next) {
     res.render('profile', {
@@ -112,8 +110,6 @@ module.exports = function (app, passport) {
       res.json(user || err);
     })
   });
-
-
   /////////////////////API///////////////////////////////////////////////////
   app.get('/api/user/:userid', UserController.isLoggedIn, function (req, res, next) {
     UserController.getUser(req, res, function (err, user) {

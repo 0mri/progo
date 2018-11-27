@@ -60,6 +60,7 @@ module.exports = {
       socketID: socketID
     }, {
       status: 'offline',
+      stayLogedIn: false,
       socketID: null,
       lastseen: Date.now()
     }, {

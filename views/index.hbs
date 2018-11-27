@@ -1,11 +1,11 @@
-
 <header class="masthead text-white text-center">
   <div class="overlay"></div>
   <div class="container d-flex h-100">
     <div class="row justify-content-center align-self-center">
-      <div class="col-xl-9 mx-auto" >
+      <div class="col-xl-9 mx-auto">
         <p class="">
-          <h1 class="" data-wow-delay="">PROGO</h1></p>
+          <h1 class="" data-wow-delay="">PROGO</h1>
+        </p>
         <h2 class="mb-5" data-wow-delay="">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           Donec et volutpat nisi. Vivamus non felis augue. Pellentesque consequat eleifend risus id pretium!</h2>
@@ -29,13 +29,18 @@
       <div class="modal-body">
         <form id="login" class="col-10 mx-auto">
           <div class="md-form">
-              <input autocomplete="off" type="text" id="email" class="form-control">
-              <label for="email" class="">Email</label>
+            <input autocomplete="off" type="text" id="email" class="form-control">
+            <label for="email" class="">Email</label>
           </div>
           <div class="md-form">
             <input autocomplete="current-password" type="password" id="password" class="form-control">
             <label for="password">Password</label>
           </div>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="csi">
+            <label class="custom-control-label" for="csi">Stay signed in?</label>
+          </div>
+          <br>
           <div class="warn">
           </div>
           <div class="text-center">
@@ -60,11 +65,11 @@
       <div class="modal-body">
         <form id="register" class="col-10 mx-auto">
           <div class="md-form">
-              <input class="form-control" name="email" autocomplete="off" type="text">
-              <label for="email" class="">Email</label>
+            <input class="form-control" name="email" autocomplete="off" type="text">
+            <label for="email" class="">Email</label>
           </div>
           <div class="md-form">
-            <input class="form-control" name="password" autocomplete="current-password" type="password" >
+            <input class="form-control" name="password" autocomplete="current-password" type="password">
             <label for="password">Password</label>
           </div>
           <div class="md-form">
@@ -92,6 +97,7 @@
     $('#login').submit(function(event) {
       var emailField = $(this).find('input[id=email]');
       var passwordField = $(this).find('input[id=password]');
+      var csi = $(this).find('input[id=csi]');
       var submitButton = $(this).find('button[type=submit]');
       var spinner = $('.loading-spinner');
       var alert = $(this).find($('.warn'));
@@ -104,7 +110,8 @@
         console.log('aaa');*/
       var formData = {
         'email': emailField.val(),
-        'password': passwordField.val()
+        'password': passwordField.val(),
+        'csi': csi.is(':checked')
       }
       $.ajax({
         type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
@@ -123,7 +130,7 @@
         } else {
           spinner.addClass('hide');
           alert.append('<div class="text-center text-primary"><i class="success-text ion-checkmark animated fadeIn"></i></div>')
-          setTimeout('login_direction()',600);
+          setTimeout('login_direction()', 600);
         }
       }).fail(function(data) {
         spinner.addClass('hide');
@@ -148,26 +155,26 @@
       spinner.removeClass('hide');
 
 
-      if(!validator.isEmail(emailField.val())){ //if not an email
-        setTimeout(function(){
-            emailField.addClass('invalid');
-            passwordField.addClass('invalid');
-            passwordConfField.addClass('invalid');
-            submitButton.removeClass('hide');
-            spinner.addClass('hide');
-            alert.append('<div class="alert alert-danger">Please enter a valid email</div>'); // add the actual error message under our input
-          }, 250);
+      if (!validator.isEmail(emailField.val())) { //if not an email
+        setTimeout(function() {
+          emailField.addClass('invalid');
+          passwordField.addClass('invalid');
+          passwordConfField.addClass('invalid');
+          submitButton.removeClass('hide');
+          spinner.addClass('hide');
+          alert.append('<div class="alert alert-danger">Please enter a valid email</div>'); // add the actual error message under our input
+        }, 250);
         return false;
       }
-      if(passwordField.val() != passwordConfField.val()){ //if passwords dont match
-        setTimeout(function(){
-            emailField.addClass('invalid');
-            passwordField.addClass('invalid');
-            passwordConfField.addClass('invalid');
-            submitButton.removeClass('hide');
-            spinner.addClass('hide');
-            alert.append('<div class="alert alert-danger">Password dont match</div>'); // add the actual error message under our input
-          }, 250);
+      if (passwordField.val() != passwordConfField.val()) { //if passwords dont match
+        setTimeout(function() {
+          emailField.addClass('invalid');
+          passwordField.addClass('invalid');
+          passwordConfField.addClass('invalid');
+          submitButton.removeClass('hide');
+          spinner.addClass('hide');
+          alert.append('<div class="alert alert-danger">Password dont match</div>'); // add the actual error message under our input
+        }, 250);
         return false;
       }
       var formData = {
@@ -195,7 +202,7 @@
           } else {
             spinner.addClass('hide');
             alert.append('<div class="text-center text-primary"><i class="success-text ion-checkmark animated fadeIn"></i></div>')
-            setTimeout('login_direction()',600);
+            setTimeout('login_direction()', 600);
           }
         })
         .fail(function(data) {
