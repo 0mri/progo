@@ -69,7 +69,7 @@ app.use(session({
   resave: true,
   cookie: {
     httpOnly: false,
-    secure: false
+    secure: true
   },
   unset: 'destroy',
   saveUninitialized: false,
