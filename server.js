@@ -72,7 +72,7 @@ app.use(session({
     secure: true
   },
   unset: 'destroy',
-  saveUninitialized: false,
+  saveUninitialized: true,
   store: new MongoStore({mongooseConnection: mongoose.connection})
 }));
 app.use(passport.initialize());
