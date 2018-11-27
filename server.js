@@ -62,11 +62,10 @@ app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs'); // set up hbs for templating
 app.use(express.static(__dirname + '/public'));
 // required for passport
-const day = 8.64e+7;
-const hour = 3.6e+6;
+app.set('trust proxy', 1)
 app.use(session({
   secret: process.env.SESSION_SECRET, // session secret
-  resave: true,
+  resave: false,
   cookie: {
     httpOnly: false,
     secure: true
