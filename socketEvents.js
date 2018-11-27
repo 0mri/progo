@@ -10,9 +10,10 @@ module.exports = function (io) {
         socketID: socket.id
       }
       UserController.userConnect(socketUser, function (err, user) {
-        if(err) throw err
-        //  console.log(user + ' CONNECTED');
-      })
+        if (err) 
+          throw err
+          //  console.log(user + ' CONNECTED');
+        })
     });
     // On conversation entry, join broadcast channel
     socket.on('enter conversation', (conversation) => {
@@ -24,21 +25,25 @@ module.exports = function (io) {
       console.log('left ' + conversation);
     })
     socket.on("new message", (data) => {
-      if(data.conversationID == undefined) {
+      if (data.conversationID == undefined) {
         ConversationController.createAndSendMessage(data, function (err, message) {
-          if(err) return console.log(err)
+          if (err) 
+            return console.log(err)
           io.to(socket.id).to(data.to).emit('refresh messages', message);
         })
-      } else ConversationController.sendReply(data, function (err, message) {
-        if(err) return console.log(err);
-        io.to(socket.id).to(data.to).emit('refresh messages', message);
-      })
+      } else 
+        ConversationController.sendReply(data, function (err, message) {
+          if (err) 
+            return console.log(err);
+          io.to(socket.id).to(data.to).emit('refresh messages', message);
+        })
     });
     socket.on('disconnect', () => {
       UserController.userDisconnect(socket.id, function (err, user) {
-        if(err) throw err
-        //      console.log(user + ' disconnected');
-      })
+        if (err) 
+          throw err
+          //      console.log(user + ' disconnected');
+        })
       //console.log(socket.id + ' Has disconnected');
     });
   });

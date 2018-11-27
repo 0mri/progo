@@ -13,7 +13,7 @@ var userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
   firstName: {
     type: String
@@ -41,22 +41,16 @@ var userSchema = new mongoose.Schema({
     required: true
   },
   socketID: {
-    type: String,
+    type: String
   },
   status: {
     type: String,
     default: 'offline'
   },
   lastseen: {
-    type: Date,
-  },
-  stayLogedIn: {
-    type: Boolean,
-    default: false
+    type: Date
   }
-}, {
-  versionKey: false
-});
+}, {versionKey: false});
 //send mails
 userSchema.methods.sendMail = function (user) {
   var to = user.email,
@@ -87,12 +81,11 @@ userSchema.methods.escapeRegExp = function (str) {
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 };
 userSchema.methods.clearPassword = function (user) {
-  if(user) {
+  if (user) {
     user.password = undefined;
     return user;
   }
   return false;
 }
-// Normalize Date
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);

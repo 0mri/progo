@@ -4,9 +4,7 @@ module.exports = function (to, subject, message) {
   // Only needed if you don't have a real mail account for testing
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    port: 465,
-    secure: true, // true for 465, false for other ports
+    service: 'gmail', port: 465, secure: true, // true for 465, false for other ports
     auth: {
       user: process.env.EMAIL_USER, // generated ethereal user
       pass: process.env.EMAIL_PASSWORD // generated ethereal password
@@ -21,7 +19,7 @@ module.exports = function (to, subject, message) {
   };
   // send mail with defined transport object
   transporter.sendMail(mailOptions, (error, info) => {
-    if(error) {
+    if (error) {
       return console.log(error);
     }
     console.log('Message sent: %s', info.messageId);

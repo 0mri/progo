@@ -3,8 +3,6 @@ var LocalStrategy = require('passport-local').Strategy;
 var validator = require('validator');
 // load up the user model
 var User = require('../app/models/user');
-// load the auth variables
-var configAuth = require('./auth'); // use this one for testing
 module.exports = function (passport) {
   // =========================================================================
   // passport session setup ==================================================
@@ -30,32 +28,26 @@ module.exports = function (passport) {
     passwordField: 'password',
     passReqToCallback: true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
   }, function (req, email, password, done) {
-    if(email) email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
+    if (email) 
+      email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
     // asynchronous
     process.nextTick(function () {
       User.findOne({
         'email': email
       }, function (err, user) {
         // if there are any errors, return the error
-        if(err) return done(err);
+        if (err) 
+          return done(err);
+        
         // if no user is found, return the message
-        if(!user) return done(null, false, {
-          message: 'No User found'
-        });
-        if(!user.validPassword(password)) return done(null, false, {
-          message: 'Password Incorrect'
-        });
-        // all is well, return user
-        else {
-          user.stayLogedIn = req.body.csi;
-          user.save(function (err) {
-            if(err) return done(err);
-            return done(null, user.clearPassword(user), {
-              Success: true
-            });
-          });
+        if (!user) 
+          return done(null, false, {message: 'No user found'});
+        if (!user.validPassword(password)) 
+          return done(null, false, {message: 'Password incorrect'});
+        else 
+          return done(null, user.clearPassword(user), {Success: true}); // all is well, return user
         }
-      });
+      );
     });
   }));
   // =========================================================================
@@ -67,24 +59,23 @@ module.exports = function (passport) {
     passwordField: 'password',
     passReqToCallback: true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
   }, function (req, email, password, done) {
-    if(!validator.isEmail(email)) //check if email
-      return done(null, false, {
-        message: 'Please enter a valid email'
-      });
+    if (!validator.isEmail(email)) //check if email
+      return done(null, false, {message: 'Please enter a valid email'});
     email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
     // asynchronous
     process.nextTick(function () {
       // if the user is not already logged in:
-      if(!req.user) {
+      if (!req.user) {
         User.findOne({
           'email': email
         }, function (err, user) {
           // if there are any errors, return the error
-          if(err) return done(err);
+          if (err) 
+            return done(err);
+          
           // check to see if theres already a user with that email
-          if(user) return done(null, false, {
-            message: 'That email is already taken.'
-          });
+          if (user) 
+            return done(null, false, {message: 'Your email address is already registered with progo'});
           else {
             // create the user
             var newUser = new User();
@@ -94,21 +85,24 @@ module.exports = function (passport) {
             newUser.profileImage = newUser.randomImage();
             newUser.createdAt = newUser.currentTime();
             newUser.save(function (err) {
-              if(err) return done(err);
-              if(process.env.NODE_ENV != 'development') newUser.sendMail(newUser);
+              if (err) 
+                return done(err);
+              if (process.env.NODE_ENV != 'development') 
+                newUser.sendMail(newUser);
               return done(null, newUser);
             });
           }
         });
         // if the user is logged in but has no local account...
-      } else if(!req.user.email) {
+      } else if (!req.user.email) {
         // ...presumably they're trying to connect a local account
         // BUT let's check if the email used to connect a local account is being used by another user
         User.findOne({
           'email': email
         }, function (err, user) {
-          if(err) return done(err);
-          if(user) {
+          if (err) 
+            return done(err);
+          if (user) {
             return done(null, false, req.flash('loginMessage', 'That email is already taken.'));
             // Using 'loginMessage instead of signupMessage because it's used by /connect/local'
           } else {
@@ -116,7 +110,8 @@ module.exports = function (passport) {
             user.email = email;
             user.password = user.generateHash(password);
             user.save(function (err) {
-              if(err) return done(err);
+              if (err) 
+                return done(err);
               return done(null, user);
             });
           }
