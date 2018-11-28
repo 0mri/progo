@@ -8,10 +8,8 @@ module.exports = function (app, passport) {
   app.get("/", UserController.search, function (req, res) {
     if (!req.user) 
       return res.render("index");
-    var user = new User();
-    res.render("dashboard", {
-      user: user.clearPassword(req.user)
-    });
+    var user = new User().clearPassword(req.user);
+    res.render("dashboard", {user: user});
   });
   // ADMIN SECTION =========================
   app.get("/admin", function (req, res) {

@@ -62,16 +62,12 @@ app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs'); // set up hbs for templating
 app.use(express.static(__dirname + '/public'));
 // required for passport
-app.set('trust proxy', 1)
+app.set('trust proxy', 1);
 app.use(session({
   secret: process.env.SESSION_SECRET, // session secret
   resave: false,
-  cookie: {
-    httpOnly: false,
-    secure: true
-  },
   unset: 'destroy',
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: new MongoStore({mongooseConnection: mongoose.connection})
 }));
 app.use(passport.initialize());
